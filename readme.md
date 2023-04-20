@@ -85,35 +85,46 @@ Aşağıda tablolar ve şemaları verilmiş.
 [ ] Aşağıda istenen değişiklikleri tablolarda yapacak SQL ifadeleri yazınız.
 
    1- öğrenci tablosuna 'sehir' alanı ekleyiniz.
-
+alter table ogrenci add sehir varchar(45) not null
 
    2- tablolarda veri olarak tarih geçen alanlarda veri tipini string yerine DateTime olarak ayarlayınız.
-
+alter table ogrenci ALTER COLUMN dtarih DateTime;
+alter table islem ALTER COLUMN atarih DateTime
+alter table islem ALTER COLUMN vtarih DateTime
 
    3- öğrenci tablosuna 'dogum_yeri' alanı ekleyiniz ve default değerini 'Türkiye' yapınız.
-
+alter table ogrenci add dogum_yeri varchar(45) not null default 'Turkiye'
 
    4- öğrenci tablosundan 'puan' alanını siliniz.
-
+alter table ogrenci drop column puan 
 
    5- öğrenciler tablosundaki kiz öğrencileri alarak kiz_ogrenciler tablosu oluşturunuz.
-   
+SELECT * INTO kiz_ogrenciler FROM ogrenci where cinsiyet='K'
    
    6- kiz_ogrenciler tablosunu siliniz.
-
+DROP TABLE kiz_ogrenciler
 
    7- kiz_yurdu tablosu oluşturunuz(sadece 'ad' alanı olsun). 1 kayıt ekleyiniz.
       öğrenci tablosundaki kız öğrencileri kullanarak kiz_yurdunda_kalanlar tablosu oluşturunuz
+CREATE TABLE kiz_yurdu 
+(
+ad varchar(50) NOT NULL DEFAULT 'yurt',
+ogrno int NOT NULL
+)
 
+INSERT INTO kiz_yurdu(ogrno) SELECT id from ogrenci where cinsiyet='K'
 
    8- kiz_ogrenciler tablosunun adını kogrenciler olarak değiştiriniz
-
+exec sp_rename kiz_ogrenciler , kogrenciler 
 
    9- yazar tablosundaki 'ad' alanının adını 'name' olarak güncelleyiniz.
-
+exec sp_rename 'dbo.yazar.ad' , 'name' , 'COLUMN' 
 
    10- yazar tablosuna 'ulke' ve 'universite' alanları ekleyiniz 'ulke'nin default değeri 'Türkiye' olsun.
-
+alter table yazar add ulke varchar(45) not null
+alter table yazar add universite varchar(45) not null
 
    11- tablo ilişkilerine 5'er tane örnek veriniz (1-1, 1-n, n-n)  
 
+ogrenci -> islem 1-n
+yazar -> kitap 1-n 
